@@ -44,6 +44,7 @@ autoreconf
 
 %install
 %makeinstall_std
+%__rm -rf %{buildroot}%{_libdir}/*.la
 
 %files -n %{libname}
 %defattr(-, root, root)
