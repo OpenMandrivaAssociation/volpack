@@ -3,7 +3,7 @@
 
 Name: volpack
 Version: 1.0c7
-Release: 1
+Release: 2
 Summary: Portable library for fast volume rendering
 Group: System/Libraries
 License: BSD
@@ -26,7 +26,7 @@ produce high-quality images.  It was written by Phil Lacroute.
 %package devel
 Summary: Static libraries and header file for development using volpack
 Group: Development/C
-Requires: volpack = %{version}
+Requires: %{libname} = %{version}
 
 %description devel
 The volpack-devel package contains the header files and static libraries
