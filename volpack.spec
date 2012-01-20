@@ -40,7 +40,7 @@ autoreconf
 
 %build
 %configure --enable-static=no
-%make
+make
 
 %install
 %makeinstall_std
