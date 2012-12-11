@@ -40,7 +40,7 @@ autoreconf
 
 %build
 %configure --enable-static=no
-make
+%make
 
 %install
 %makeinstall_std
@@ -57,3 +57,21 @@ make
 %{_includedir}/*
 %{_mandir}/man3/*
 
+
+
+%changelog
+* Fri Jan 20 2012 Dmitry Mikhirev <dmikhirev@mandriva.org> 1.0c7-2
++ Revision: 762967
+- fix requires for devel package
+
+* Fri Jan 20 2012 Dmitry Mikhirev <dmikhirev@mandriva.org> 1.0c7-1
++ Revision: 762953
+- imported package volpack
+
+
+* Wed Nov 10 2004 Andy Loening <loening@alum.mit.edu>
+- updates for multilib support (x86_64)
+- split off devel package
+
+* Sun Mar 18 2001 Andy Loening <loening@alum.mit.edu>
+- wrote this fool thing
