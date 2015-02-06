@@ -3,7 +3,7 @@
 
 Name: volpack
 Version: 1.0c7
-Release: 2
+Release: 3
 Summary: Portable library for fast volume rendering
 Group: System/Libraries
 License: BSD
