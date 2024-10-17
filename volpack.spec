@@ -7,7 +7,7 @@ Release: 3
 Summary: Portable library for fast volume rendering
 Group: System/Libraries
 License: BSD
-URL: http://amide.sourceforge.net
+URL: https://amide.sourceforge.net
 Source0: %{name}-%{version}.tgz
 Patch0: volpack-1.0c7-mdv-link.patch
 
