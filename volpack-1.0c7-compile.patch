@@ -1,0 +1,161 @@
+diff -up volpack-1.0c7/examples/classifyvolume.c.omv~ volpack-1.0c7/examples/classifyvolume.c
+--- volpack-1.0c7/examples/classifyvolume.c.omv~	2024-10-25 00:12:46.627529181 +0200
++++ volpack-1.0c7/examples/classifyvolume.c	2024-10-25 00:13:11.497803652 +0200
+@@ -35,9 +35,12 @@
+  *    Stanford University
+  */
+ 
++#include <fcntl.h>
++#include <unistd.h>
++#include <string.h>
+ #include "volume.h"
+ 
+-main(argc, argv)
++int main(argc, argv)
+ int argc;
+ char **argv;
+ {
+diff -up volpack-1.0c7/examples/denfile.c.omv~ volpack-1.0c7/examples/denfile.c
+--- volpack-1.0c7/examples/denfile.c.omv~	2024-10-25 00:15:27.699301302 +0200
++++ volpack-1.0c7/examples/denfile.c	2024-10-25 00:17:48.030841404 +0200
+@@ -7,6 +7,8 @@
+ 
+ #include <stdio.h>
+ #include <stdlib.h>
++#include <fcntl.h>
++#include <unistd.h>
+ 
+ #ifndef MIN
+ #define MIN(a, b) ((a) > (b) ? (b) : (a))
+@@ -18,6 +20,11 @@
+ 
+ #define MAX_READ_SIZE	8192	/* maximum # of bytes per read(2) call */
+ 
++int read_shorts(int fd, short *sbuf, int shortcount, int swap);
++int read_words(int fd, int *wbuf, int wordcount, int swap);
++int read_bytes(int fd, char *buf, int bytecount);
++int write_bytes(int fd, char *buf, int bytecount);
++
+ /*
+  * read_den
+  *
+@@ -211,7 +218,7 @@ int xlen, ylen, zlen;	/* volume dimensio
+  * error or the full number of bytes could not be read.
+  */
+ 
+-read_bytes(fd, buf, bytecount)
++int read_bytes(fd, buf, bytecount)
+ int fd;		/* file descriptor to read from */
+ char *buf;	/* memory in which to store data */
+ int bytecount;	/* number of bytes to read */
+@@ -239,7 +246,7 @@ int bytecount;	/* number of bytes to rea
+  * error or the full number of shorts could not be read.
+  */
+ 
+-read_shorts(fd, sbuf, shortcount, swap)
++int read_shorts(fd, sbuf, shortcount, swap)
+ int fd;		/* file descriptor to read from */
+ short *sbuf;	/* memory in which to store data */
+ int shortcount;	/* number of shorts to read */
+@@ -287,7 +294,7 @@ int swap;	/* if nonzero then swap bytes
+  * error or the full number of words could not be read.
+  */
+ 
+-read_words(fd, wbuf, wordcount, swap)
++int read_words(fd, wbuf, wordcount, swap)
+ int fd;		/* file descriptor to read from */
+ int *wbuf;	/* memory in which to store data */
+ int wordcount;	/* number of words to read */
+@@ -335,7 +342,7 @@ int swap;	/* if nonzero then swap bytes
+  * Return value is 1 if the write was succesful or 0 if there was an error.
+  */
+ 
+-write_bytes(fd, buf, bytecount)
++int write_bytes(fd, buf, bytecount)
+ int fd;		/* file descriptor to write to */
+ char *buf;	/* memory containing data */
+ int bytecount;	/* number of bytes to write */
+diff -up volpack-1.0c7/examples/makeoctree.c.omv~ volpack-1.0c7/examples/makeoctree.c
+--- volpack-1.0c7/examples/makeoctree.c.omv~	2024-10-25 00:12:20.907245210 +0200
++++ volpack-1.0c7/examples/makeoctree.c	2024-10-25 00:12:41.667474428 +0200
+@@ -35,9 +35,11 @@
+  *    Stanford University
+  */
+ 
++#include <fcntl.h>
++#include <unistd.h>
+ #include "volume.h"
+ 
+-main()
++int main()
+ {
+     vpContext *vpc;	/* rendering context */
+     int volume_fd;	/* file descriptor for volume data (input) */
+diff -up volpack-1.0c7/examples/makevolume.c.omv~ volpack-1.0c7/examples/makevolume.c
+--- volpack-1.0c7/examples/makevolume.c.omv~	2024-10-25 00:11:37.396764525 +0200
++++ volpack-1.0c7/examples/makevolume.c	2024-10-25 00:11:57.546987185 +0200
+@@ -36,6 +36,8 @@
+  */
+ 
+ #include <sys/types.h>
++#include <fcntl.h>
++#include <unistd.h>
+ #include "volume.h"
+ 
+ int main()
+diff -up volpack-1.0c7/examples/rendervolume.c.omv~ volpack-1.0c7/examples/rendervolume.c
+--- volpack-1.0c7/examples/rendervolume.c.omv~	2024-10-25 00:12:07.847100968 +0200
++++ volpack-1.0c7/examples/rendervolume.c	2024-10-25 00:14:04.698389885 +0200
+@@ -36,9 +36,13 @@
+  */
+ 
+ #include <string.h>
++#include <fcntl.h>
++#include <unistd.h>
+ #include "volume.h"
+ 
+-main(argc, argv)
++int StorePGM(char *image, int width, int height, char *filename);
++
++int main(argc, argv)
+ int argc;
+ char **argv;
+ {
+@@ -210,7 +214,7 @@ char **argv;
+     return(0);
+ }
+ 
+-StorePGM(image, width, height, filename)
++int StorePGM(image, width, height, filename)
+ char *image;
+ int width, height;
+ char *filename;
+diff -up volpack-1.0c7/examples/scalevolume.c.omv~ volpack-1.0c7/examples/scalevolume.c
+--- volpack-1.0c7/examples/scalevolume.c.omv~	2024-10-25 00:14:11.208461385 +0200
++++ volpack-1.0c7/examples/scalevolume.c	2024-10-25 00:15:17.949194258 +0200
+@@ -44,9 +44,12 @@
+ 
+ #include <stdlib.h>
+ #include <stdio.h>
++#include <string.h>
+ #include <volpack.h>
+ 
+-main(argc, argv)
++extern int write_den(char *filename, unsigned char *data, int xlen, int ylen, int zlen);
++
++int main(argc, argv)
+ int argc;
+ char **argv;
+ {
+diff -up volpack-1.0c7/src/makeopts.c.omv~ volpack-1.0c7/src/makeopts.c
+--- volpack-1.0c7/src/makeopts.c.omv~	2024-10-25 00:11:17.076539901 +0200
++++ volpack-1.0c7/src/makeopts.c	2024-10-25 00:11:21.556589431 +0200
+@@ -43,7 +43,7 @@
+  * Usage: makeopts output_file [compiler_options ...]
+  */
+ 
+-main(argc, argv)
++int main(argc, argv)
+ int argc;
+ char **argv;
+ {

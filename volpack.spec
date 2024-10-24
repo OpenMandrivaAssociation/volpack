@@ -1,15 +1,16 @@
 %define major 1
-%define libname %mklibname volpack %{major}
+%define libname %mklibname volpack
 
 Name: volpack
 Version: 1.0c7
-Release: 3
+Release: 4
 Summary: Portable library for fast volume rendering
 Group: System/Libraries
 License: BSD
 URL: https://amide.sourceforge.net
-Source0: %{name}-%{version}.tgz
+Source0: https://downloads.sourceforge.net/project/amide/volpack/%{version}/volpack-%{version}.tgz
 Patch0: volpack-1.0c7-mdv-link.patch
+Patch1: volpack-1.0c7-compile.patch
 
 %description 
 VolPack is a portable library of fast volume rendering algorithms that
@@ -34,17 +35,16 @@ necessary for developing programs using the volpack volume rendering
 library.
 
 %prep
-%setup -q
-%patch0 -p1
+%autosetup -p1
 autoreconf
 
 %build
-%configure --enable-static=no
-%make
+%configure
+# The makefiles aren't SMP clean
+make
 
 %install
-%makeinstall_std
-%__rm -rf %{buildroot}%{_libdir}/*.la
+%make_install
 
 %files -n %{libname}
 %defattr(-, root, root)
@@ -56,22 +56,3 @@ autoreconf
 %{_libdir}/*.so
 %{_includedir}/*
 %{_mandir}/man3/*
-
-
-
-%changelog
-* Fri Jan 20 2012 Dmitry Mikhirev <dmikhirev@mandriva.org> 1.0c7-2
-+ Revision: 762967
-- fix requires for devel package
-
-* Fri Jan 20 2012 Dmitry Mikhirev <dmikhirev@mandriva.org> 1.0c7-1
-+ Revision: 762953
-- imported package volpack
-
-
-* Wed Nov 10 2004 Andy Loening <loening@alum.mit.edu>
-- updates for multilib support (x86_64)
-- split off devel package
-
-* Sun Mar 18 2001 Andy Loening <loening@alum.mit.edu>
-- wrote this fool thing
