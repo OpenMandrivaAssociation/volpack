@@ -12,6 +12,11 @@ Source0: https://downloads.sourceforge.net/project/amide/volpack/%{version}/volp
 Patch0: volpack-1.0c7-mdv-link.patch
 Patch1: volpack-1.0c7-compile.patch
 
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 %description 
 VolPack is a portable library of fast volume rendering algorithms that
 produce high-quality images.  It was written by Phil Lacroute.
